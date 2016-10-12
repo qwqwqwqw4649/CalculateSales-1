@@ -9,24 +9,34 @@ public class Calculate_sales {
 
 
 	public static void main(String[] args) {
-
-		File file = new File(args[0],"branch.lst");  //ファイル名を引数にしてファイルオブジェクトを作成
-		HashMap<String, String> map = new HashMap<String, String>();  //キーと値が共にストリング型のマップオブジェクト
+		
+		//ファイル名を引数にしてファイルオブジェクトを作成
+		File file = new File(args[0],"branch.lst");
+		
+		//キーと値が共にストリング型のマップオブジェクト
+		HashMap<String, String> map = new HashMap<String, String>();  
 		try {
-			FileReader fr = new FileReader(file);  //上で生成したFailオブジェクトを引数にして、文字列を受け取るFileReaderオブジェクトを生成
-			BufferedReader br = new BufferedReader(fr);  //上で生成したFileオブジェクトを引数として、そこから文字列を受け取るFileオブジェクトを生成
+			//上で生成したFailオブジェクトを引数にして、文字列を受け取るFileReaderオブジェクトを生成
+			FileReader fr = new FileReader(file);  
+			 //上で生成したFileオブジェクトを引数として、そこから文字列を受け取るFileオブジェクトを生成
+			BufferedReader br = new BufferedReader(fr); 
 		    String s;
-		    while((s = br.readLine()) != null) {  // 生成したBufferdオブジェクトのreadLineメソッドを使用して文字列データを受け取る
-		    	String[] branchData = s.split(",");  //文字列の分割
-		    	
-                if(branchData[0].matches("^[0-9]{3}$") && branchData.length == 2 ) {
-                	
-                
-				map.put(branchData[0], branchData[1]);  //キーと値のペアを追加
-				System.out.println(map.get(branchData[0]));
+		    // 生成したBufferdオブジェクトのreadLineメソッドを使用して文字列データを受け取る
+		    while((s = br.readLine()) != null) {  
+		    	//文字列の分割
+		    	String[] branchData = s.split(",");  
+		    	//whileの処理でちゃんと条件に当てはまるか確認したい
+                if(branchData[0].matches("^[0-9]{3}$") && branchData.length == 2 ) {  
+
+                //キーと値のペアを追加
+				map.put(branchData[0], branchData[1]); 
+				 //マップのkeyを受け取って、valueをコンソールへ表示
+				System.out.println(map.get(branchData[0])); 
                 } else {
+                	//ifの条件分岐に当てはまらなかった場合はエラーメッセージを表示
                 	System.out.println("支店定義ファイルのフォーマットが不正です");
-                	return;
+                	//条件に当てはまらなかったら、それ以降の処理を停止
+                	return;  
                 }
 
 //				System.out.println(map.values());
@@ -38,23 +48,25 @@ public class Calculate_sales {
 //		    	String branchName = branchData[1];
 
 		    }
-		    br.close();  //ファイル出力のストリームを閉じる
+		    //ファイル出力のストリームを閉じる
+		    br.close();  
 		}
-		catch (IOException e) { //tryでファイルが存在しない時に出力するエラー
+		//tryでファイルが存在しない時に出力するエラー
+		catch (IOException e) { 
 			System.out.println("支店定義ファイルが存在しません");
 			System.out.println(e);
 	    }
-		catch (ArrayIndexOutOfBoundsException e) { //tryでフォーマットが不正な場合に出力するエラー
-	    	System.out.println("支店定義ファイルのフォーマットが不正です");
-	    	System.out.println(e);
+//		catch (ArrayIndexOutOfBoundsException e) { //tryでフォーマットが不正な場合に出力するエラー
+//	    	System.out.println("支店定義ファイルのフォーマットが不正です");
+//	    	System.out.println(e);
 
 	    }
-
-		 System.out.println(map.entrySet()); //格納されている値を出力
+       	//格納されている値を出力
+//		System.out.println(map.entrySet());
 
 	}
 
 
 
-}
+
 
