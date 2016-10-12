@@ -23,7 +23,10 @@ public class Calculate_sales {
                 	
                 
 				map.put(branchData[0], branchData[1]);  //キーと値のペアを追加
-
+				System.out.println(map.get(branchData[0]));
+                } else {
+                	System.out.println("支店定義ファイルのフォーマットが不正です");
+                	return;
                 }
 
 //				System.out.println(map.values());
