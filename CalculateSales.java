@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class CalculateSales {
 	public static void main(String[] args) throws IOException {
 
-		//ファイル名を引数にしてファイルオブジェクトを作成
+		//ファイル名を引数にしてファイルオブジェクトを作成★コマンドライン引数
 		File branchFile = new File(args[0], "branch.lst");
 		//fileが存在するかを真偽値で判定する
 		if(!branchFile.exists()) {
@@ -57,20 +57,20 @@ public class CalculateSales {
             br.close();
 		}
 
-        
-		File commodityFile = new File(args[0], "commodity.lt");
+
+		File commodityFile = new File(args[0], "commodity.lst");
 		if(!commodityFile.exists()) {
 			System.out.println("商品定義ファイルが存在しません");
 			return;
 		}
-		
+
 		HashMap<String, String> commodityMap = new HashMap<String, String>();
-		
+
 		try {
 			FileReader fr = new FileReader(commodityFile);
 			br = new BufferedReader(fr);
 			String str;
-			
+
 			while((str = br.readLine()) != null) {
 				String[] commodityData = str.split(",");
 				if(commodityData.length == 2 && commodityData[0].matches("^\\w{8}")) {   //^[0-9]
@@ -85,13 +85,40 @@ public class CalculateSales {
 		catch (IOException e) {
 			System.out.println("予期せぬエラーが発生しました");
 			return;
-			
+
 		}
 		finally {
 			br.close();
 		}
 
-    }
+		//拡張子rcd、ファイル名が8桁連番のファイルを検索
+		//dir=ディレクトリ
+//		File dir = new File(args[0]);
+//		String filelist[] = dir.list();
+//		for(int i = 0; i < filelist.length; i++) {
+//			if("filelist".maches("rcd")) {
+//			System.out.println(filelist[i])
+//
+//
+//
+
+			;
+		File dir = new File(args[0]);
+	    File[] files = dir.listFiles();
+	    for (int i = 0; i < files.length; i++) {
+	        File file = files[i];
+
+       	 	//System.out.println((i + 1) + ":    " + file.getName());
+
+       	 	//file.getNameはString型になってる!!
+	        if(file.getName().matches("^[0-9]{8}.rcd$")) {
+	        	System.out.println(file.getName());
+	        }
+
+
+		}
+	}
+
 }
 
 
