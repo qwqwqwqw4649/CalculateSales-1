@@ -102,17 +102,36 @@ public class CalculateSales {
 //
 //
 
-			;
+			
 		File dir = new File(args[0]);
 	    File[] files = dir.listFiles();
 	    for (int i = 0; i < files.length; i++) {
 	        File file = files[i];
 
-       	 	//System.out.println((i + 1) + ":    " + file.getName());
+       	 	System.out.println(i + ":    " + file.getName());
 
        	 	//file.getNameはString型になってる!!
 	        if(file.getName().matches("^[0-9]{8}.rcd$")) {
-	        	System.out.println(file.getName());
+	        	String str = file.getName();
+	        	System.out.println(str.substring(0,8));
+	        	int j = Integer.parseInt(str);
+	        	
+	        	//List<File> earnings  = new ArrayList<File>();
+	        	//earnings.add(file);
+	        	//File list = (earnings) .get(j);
+	        	
+	        	for(j += 1; j < 5; j++) {
+	        		FileReader fr = new FileReader(str);
+	        		
+		        	
+	        		
+	        		
+	        	}
+	        	
+	        	//System.out.println(file.getName());
+	        	
+	        } else {
+	        	System.out.println("売上ファイルが連番になっていません");
 	        }
 
 
