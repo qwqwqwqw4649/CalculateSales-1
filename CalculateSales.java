@@ -107,7 +107,7 @@ public class CalculateSales {
 		//対象のリストを作る
 		File dir = new File(args[0]);
 	    File[] files = dir.listFiles();
-	    List<File> listName = new ArrayList<File>();
+	    List<File> rcdList = new ArrayList<File>();
 
 	    // rcdファイルの4抽出
 	    for (int i = 0; i < files.length; i++) {
@@ -115,20 +115,25 @@ public class CalculateSales {
 	    	File file = files[i];
 	        //売上ファイルだけにする
 	        if(file.getName().matches("^[0-9]{8}.rcd$")) {
-	        	listName.add(file);
+	        	rcdList.add(file);
 	        }
 	    }
 
 	    // 連番チェックを行う
-	    for (int i = 0; i < listName.size(); i++) {
-        	String str = listName.get(i).getName();
+	    for (int i = 0; i < rcdList.size(); i++) {
+        	String str = rcdList.get(i).getName();
         	int index = Integer.parseInt(str.split("\\.")[0]);
-        	System.out.println(index);
-        	//System.out.println("売上ファイル名が連番になっていません");
+        	if((i + 1) == index) {
+        	System.out.println(i);
+        	} else {
+        		System.out.println("売上ファイル名が連番になってません");
+        	}
+      	
 		}
 
+
 	    // 集計をしていく
-	    for (int i = 0; i < listName.size(); i++) {
+	    for (int i = 0; i < rcdList.size(); i++) {
 
 	    }
 	}
