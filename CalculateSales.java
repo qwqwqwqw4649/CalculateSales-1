@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CalculateSales {
 	public static void main(String[] args) throws IOException {
@@ -37,7 +39,7 @@ public class CalculateSales {
                 //キーと値のペアを追加
 				branchMap.put(branchData[0], branchData[1]);
 				 //マップのkeyを受け取って、valueをコンソールへ表示
-				System.out.println(branchMap.get(branchData[0]));
+//				System.out.println(branchMap.get(branchData[0]));
                 } else {
                 	//ifの条件分岐に当てはまらなかった場合はエラーメッセージを表示
                 	System.out.println("支店定義ファイルのフォーマットが不正です");
@@ -75,7 +77,7 @@ public class CalculateSales {
 				String[] commodityData = str.split(",");
 				if(commodityData.length == 2 && commodityData[0].matches("^\\w{8}")) {   //^[0-9]
 					commodityMap.put(commodityData[0], commodityData[1]);
-					System.out.println(commodityMap.get(commodityData[0]));
+//					System.out.println(commodityMap.get(commodityData[0]));
 				} else {
 					System.out.println("商品定義ファイルのフォーマットが不正です");
 					return;
@@ -102,40 +104,33 @@ public class CalculateSales {
 //
 //
 
-			
+		//対象のリストを作る
 		File dir = new File(args[0]);
 	    File[] files = dir.listFiles();
+	    List<File> listName = new ArrayList<File>();
+
+	    // rcdファイルの4抽出
 	    for (int i = 0; i < files.length; i++) {
-	        File file = files[i];
-
-       	 	System.out.println(i + ":    " + file.getName());
-
-       	 	//file.getNameはString型になってる!!
+	    	 //対象のリストを作る
+	    	File file = files[i];
+	        //売上ファイルだけにする
 	        if(file.getName().matches("^[0-9]{8}.rcd$")) {
-	        	String str = file.getName();
-	        	System.out.println(str.substring(0,8));
-	        	int j = Integer.parseInt(str);
-	        	
-	        	//List<File> earnings  = new ArrayList<File>();
-	        	//earnings.add(file);
-	        	//File list = (earnings) .get(j);
-	        	
-	        	for(j += 1; j < 5; j++) {
-	        		FileReader fr = new FileReader(str);
-	        		
-		        	
-	        		
-	        		
-	        	}
-	        	
-	        	//System.out.println(file.getName());
-	        	
-	        } else {
-	        	System.out.println("売上ファイルが連番になっていません");
+	        	listName.add(file);
 	        }
+	    }
 
-
+	    // 連番チェックを行う
+	    for (int i = 0; i < listName.size(); i++) {
+        	String str = listName.get(i).getName();
+        	int index = Integer.parseInt(str.split("\\.")[0]);
+        	System.out.println(index);
+        	//System.out.println("売上ファイル名が連番になっていません");
 		}
+
+	    // 集計をしていく
+	    for (int i = 0; i < listName.size(); i++) {
+
+	    }
 	}
 
 }
