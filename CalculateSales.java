@@ -13,7 +13,7 @@ public class CalculateSales {
 
 		//ファイル名を引数にしてファイルオブジェクトを作成★コマンドライン引数
 		File branchFile = new File(args[0], "branch.lst");
-		//fileが存在するかを真偽値で判定する
+	    //fileが存在するかを真偽値で判定する
 		if(!branchFile.exists()) {
 			System.out.println("支店定義ファイルが存在しません");
 			//if文の条件に当てはまったときに処理を停止
@@ -38,6 +38,11 @@ public class CalculateSales {
 
                 //キーと値のペアを追加
 				branchMap.put(branchData[0], branchData[1]);
+				// 
+				HashMap<String, Integer>branchTotalMap = new HashMap<String, Integer>();
+				branchTotalMap.put(branchData[0], 0);
+				
+				
 				 //マップのkeyを受け取って、valueをコンソールへ表示
 //				System.out.println(branchMap.get(branchData[0]));
                 } else {
@@ -78,6 +83,8 @@ public class CalculateSales {
 				if(commodityData.length == 2 && commodityData[0].matches("^\\w{8}")) {   //^[0-9]
 					commodityMap.put(commodityData[0], commodityData[1]);
 //					System.out.println(commodityMap.get(commodityData[0]));
+					HashMap<String, Integer>commodityTotalMap = new HashMap<String, Integer>();
+					
 				} else {
 					System.out.println("商品定義ファイルのフォーマットが不正です");
 					return;
@@ -109,7 +116,7 @@ public class CalculateSales {
 	    File[] files = dir.listFiles();
 	    List<File> rcdList = new ArrayList<File>();
 
-	    // rcdファイルの4抽出
+	    // rcdファイルの抽出
 	    for (int i = 0; i < files.length; i++) {
 	    	 //対象のリストを作る
 	    	File file = files[i];
@@ -123,18 +130,52 @@ public class CalculateSales {
 	    for (int i = 0; i < rcdList.size(); i++) {
         	String str = rcdList.get(i).getName();
         	int index = Integer.parseInt(str.split("\\.")[0]);
-        	if((i + 1) == index) {
+        	if ((i + 1) == index) {
         	} else {
         		System.out.println("売上ファイル名が連番になってません");
         	}
-      	
 		}
 
-
 	    // 集計をしていく
+	    
 	    for (int i = 0; i < rcdList.size(); i++) {
-
+	    	
+		    try {
+		    	FileReader fr = new FileReader(rcdList.get(i));
+		    	String str;
+		    	//ArrayLiatを作る
+		    	List branchTotal = new ArrayList();
+		    	while ((str = br.readLine()) != null) {
+		    		// ArrayLiatに1行ずつ入れていく
+		    		branchTotal.add(rcdList);
+		    		
+		    	}
+		    	
+		    	for (int j = 0; j < rcdList.size(); j++) {
+		        	str = rcdList.get(j).getName();
+		        	int index = Integer.parseInt(str.split("\n")[0]);
+		        	if ((j + 1) == index) {
+		        	} else {
+		        		System.out.println(j + "の支店コードが不正です");
+		        		return;
+		        	}
+		    	
+		    	
+		    	
+		    }
+	    
+//	    	branchTotalMap.put(crdList[0], crdList[2]);
+	    	
 	    }
+	    finally {
+		    	
+   		}
+
+	    
+	    
+	    }
+	    
+	   
 	}
 
 }
