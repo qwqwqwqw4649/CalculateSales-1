@@ -1,8 +1,10 @@
 package jp.co.iccom.fujiya_shiho.calculate_sales;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +48,7 @@ public class CalculateSales {
 
 
 				 //マップのkeyを受け取って、valueをコンソールへ表示
-//				System.out.println(branchMap.get(branchData[0]));
+//				System.out.println(branchTotalMap.get(branchData[0]));
                 } else {
                 	//ifの条件分岐に当てはまらなかった場合はエラーメッセージを表示
                 	System.out.println("支店定義ファイルのフォーマットが不正です");
@@ -141,9 +143,9 @@ public class CalculateSales {
 	    for (int i = 0; i < rcdList.size(); i++) {
 	    	FileReader fr = new FileReader(rcdList.get(i));
 		    try {
-		    	String str;
-		    	//ArrayLiatを作る
 		    	List<String> earningsFile = new ArrayList<String>();
+		    	String str;
+		    	br = new BufferedReader(fr);
 		    	while ((str = br.readLine()) != null) {
 		    		// ArrayLiatに1行ずつ入れていく
 		    		earningsFile.add(str);
@@ -164,7 +166,7 @@ public class CalculateSales {
 		    		System.out.println(earningsFile.get(0) + "の支店コードが不正です");
 		    	}
 
-		    	if (commodityTotalMap.containsKey(earningsFile.get(0))) {
+		    	if (commodityTotalMap.containsKey(earningsFile.get(1))) {
 		    		int value = Integer.parseInt(earningsFile.get(2));
 		    		int total = commodityTotalMap.get(earningsFile.get(1));
 		    		total += value;
@@ -175,18 +177,59 @@ public class CalculateSales {
 
 		     }
 		    catch (IOException e) {
+		    	//System.out.println(e);
 		    	System.out.println("予期せぬエラーが発生しました");
 		    	return;
 		    }
 
 		    finally {
-			    	br.close();
-			    	fr.close();
+		    	br.close();
+		    	fr.close();
 	   		}
 
 
 
+//		    File branchOut = new File(args[0], "branch.out");
+//		    PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(branchOut)));
+//
+//		    try {
+//		    	if (branchOut.createNewFile()) {
+//
+//		    	}
+//
+//		    }
+//	    	catch (IOException e) {
+//	    		System.out.println(e);
+//	    		System.out.println("エラーです");
+//	    	}
+//		    finally {
+//		    	pw.close();
+//		    }
+
+
+
 	    }
+
+	    try {
+	    	File branchOut = new File(args[0], "branch.out");
+		    FileWriter fw = new FileWriter(branchOut);
+		    BufferedWriter bw = new BufferedWriter(fw);
+		    for (String key : branchMap.keySet()) {
+
+		    	//System.out.println(key + "," + branchMap.get(key) + "," + branchTotalMap.get(key));
+		    	bw.write(key + "," + branchMap.get(key) + "," + branchTotalMap.get(key) + "\r\n");
+
+
+		    }
+		    bw.close();
+	    }
+	    catch (IOException e) {
+	    	System.out.println(e);
+	    }
+	    try {
+	    	File commodityOut = new File(args[0], "co")
+	    }
+
 
 
 	}
