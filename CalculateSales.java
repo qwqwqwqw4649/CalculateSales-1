@@ -22,6 +22,8 @@ public class CalculateSales {
 
 		//キーと値が共にストリング型のマップオブジェクト
 		HashMap<String, String> branchMap = new HashMap<String, String>();
+		//空のマップ
+		HashMap<String, Integer>branchTotalMap = new HashMap<String, Integer>();
 		BufferedReader br = null;
 		try {
 			//上で生成したFailオブジェクトを引数にして、文字列を受け取るFileReaderオブジェクトを生成
@@ -38,11 +40,11 @@ public class CalculateSales {
 
                 //キーと値のペアを追加
 				branchMap.put(branchData[0], branchData[1]);
-				// 
-				HashMap<String, Integer>branchTotalMap = new HashMap<String, Integer>();
+				//
+
 				branchTotalMap.put(branchData[0], 0);
-				
-				
+
+
 				 //マップのkeyを受け取って、valueをコンソールへ表示
 //				System.out.println(branchMap.get(branchData[0]));
                 } else {
@@ -72,6 +74,7 @@ public class CalculateSales {
 		}
 
 		HashMap<String, String> commodityMap = new HashMap<String, String>();
+		HashMap<String, Integer>commodityTotalMap = new HashMap<String, Integer>();
 
 		try {
 			FileReader fr = new FileReader(commodityFile);
@@ -83,8 +86,7 @@ public class CalculateSales {
 				if(commodityData.length == 2 && commodityData[0].matches("^\\w{8}")) {   //^[0-9]
 					commodityMap.put(commodityData[0], commodityData[1]);
 //					System.out.println(commodityMap.get(commodityData[0]));
-					HashMap<String, Integer>commodityTotalMap = new HashMap<String, Integer>();
-					
+					commodityTotalMap.put(commodityData[0], 0);
 				} else {
 					System.out.println("商品定義ファイルのフォーマットが不正です");
 					return;
@@ -107,9 +109,7 @@ public class CalculateSales {
 //		for(int i = 0; i < filelist.length; i++) {
 //			if("filelist".maches("rcd")) {
 //			System.out.println(filelist[i])
-//
-//
-//
+
 
 		//対象のリストを作る
 		File dir = new File(args[0]);
@@ -137,45 +137,58 @@ public class CalculateSales {
 		}
 
 	    // 集計をしていく
-	    
+
 	    for (int i = 0; i < rcdList.size(); i++) {
-	    	
+	    	FileReader fr = new FileReader(rcdList.get(i));
 		    try {
-		    	FileReader fr = new FileReader(rcdList.get(i));
 		    	String str;
 		    	//ArrayLiatを作る
-		    	List branchTotal = new ArrayList();
+		    	List<String> earningsFile = new ArrayList<String>();
 		    	while ((str = br.readLine()) != null) {
 		    		// ArrayLiatに1行ずつ入れていく
-		    		branchTotal.add(rcdList);
-		    		
-		    	}
-		    	
-		    	for (int j = 0; j < rcdList.size(); j++) {
-		        	str = rcdList.get(j).getName();
-		        	int index = Integer.parseInt(str.split("\n")[0]);
-		        	if ((j + 1) == index) {
-		        	} else {
-		        		System.out.println(j + "の支店コードが不正です");
-		        		return;
-		        	}
-		    	
-		    	
-		    	
-		    }
-	    
-//	    	branchTotalMap.put(crdList[0], crdList[2]);
-	    	
-	    }
-	    finally {
-		    	
-   		}
+		    		earningsFile.add(str);
 
-	    
-	    
+		    	}
+
+		    	if (earningsFile.size() != 3) {
+		    		System.out.println(earningsFile.size() + "のフォーマットが不正です");
+		    	}
+
+		    	if (branchTotalMap.containsKey(earningsFile.get(0))) {
+		    		//Integerではダメだけど、後で編集するから進める
+		    		int value = Integer.parseInt(earningsFile.get(2));
+		    		int total = branchTotalMap.get(earningsFile.get(0));
+		    		total += value;
+		    		branchTotalMap.put(earningsFile.get(0), total);
+		    	} else {
+		    		System.out.println(earningsFile.get(0) + "の支店コードが不正です");
+		    	}
+
+		    	if (commodityTotalMap.containsKey(earningsFile.get(0))) {
+		    		int value = Integer.parseInt(earningsFile.get(2));
+		    		int total = commodityTotalMap.get(earningsFile.get(1));
+		    		total += value;
+		    		commodityTotalMap.put(earningsFile.get(1), total);
+		    	} else {
+		    		System.out.println(earningsFile.get(1) + "の商品コードが不正です");
+		    	}
+
+		     }
+		    catch (IOException e) {
+		    	System.out.println("予期せぬエラーが発生しました");
+		    	return;
+		    }
+
+		    finally {
+			    	br.close();
+			    	fr.close();
+	   		}
+
+
+
 	    }
-	    
-	   
+
+
 	}
 
 }
