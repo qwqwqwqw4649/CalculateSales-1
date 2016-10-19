@@ -123,8 +123,7 @@ public class CalculateSales {
 		for (int i = 0; i < rcdList.size(); i++) {
 			String str = rcdList.get(i).getName();
 			int index = Integer.parseInt(str.split("\\.")[0]);
-			if ((i + 1) == index) {
-			} else {
+			if (!((i + 1) == index)) {
 				System.out.println("売上ファイル名が連番になっていません");
 				return;
 			}
