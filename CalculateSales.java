@@ -213,7 +213,6 @@ public class CalculateSales {
 						return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue());
 				}
 			});
-
 				for (Entry<String,Long> s : entries) {
 					bw.write(s.getKey() + "," + commodityMap.get(s.getKey()) + "," + s.getValue() + (System.getProperty("line.separator")));
 				}
