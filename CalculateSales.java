@@ -211,16 +211,12 @@ public class CalculateSales {
 		FileWriter cfw = new FileWriter(commodityOut);
 		BufferedWriter cbw = new BufferedWriter(cfw);
 		try {
-			List<Map.Entry<String,Long>> entries =
-					  new ArrayList<Map.Entry<String,Long>>(commodityTotalMap.entrySet());
-				Collections.sort(entries, new Comparator<Map.Entry<String,Long>>() {
-
-					@Override
-					public int compare(
-						  Entry<String,Long> entry1, Entry<String,Long> entry2) {
-						return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue());
-					}
-				});
+			List<Map.Entry<String,Long>> entries =new ArrayList<Map.Entry<String,Long>>(commodityTotalMap.entrySet());
+			Collections.sort(entries, new Comparator<Map.Entry<String,Long>>() {
+				public int compare(Entry<String,Long> entry1, Entry<String,Long> entry2) {
+					return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue());
+				}
+			});
 
 				for (Entry<String,Long> s : entries) {
 					bw.write(s.getKey() + "," + commodityMap.get(s.getKey()) + "," + s.getValue() + (System.getProperty("line.separator")));
