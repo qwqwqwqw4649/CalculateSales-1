@@ -17,16 +17,22 @@ import java.util.Map.Entry;
 public class CalculateSales {
 	public static void main(String[] args) throws IOException {
 
+		File mainFile = new File(args[0]);
+		if (!mainFile.exists()) {
+			System.out.println("予期せぬエラーが発生しました");
+		}
+
+		if (args.length != 1) {
+			System.out.println("予期せぬエラーが発生しました");
+			return;
+		}
+
 		//ファイル名を引数にしてファイルオブジェクトを作成★コマンドライン引数
 		File branchFile = new File(args[0], "branch.lst");
 		//fileが存在するかを真偽値で判定する
 		if (!branchFile.exists()) {
 			System.out.println("支店定義ファイルが存在しません");
 			//if文の条件に当てはまったときに処理を停止
-			return;
-		}
-		if (args.length != 1) {
-			System.out.println("予期せぬエラーが発生しました");
 			return;
 		}
 
@@ -226,7 +232,7 @@ public class CalculateSales {
 			});
 
 				for (Entry<String,Long> s : entries) {
-					bw.write(s.getKey() + "," + commodityMap.get(s.getKey()) + "," + s.getValue() + (System.getProperty("line.separator")));
+					cbw.write(s.getKey() + "," + commodityMap.get(s.getKey()) + "," + s.getValue() + (System.getProperty("line.separator")));
 				}
 		} catch (IOException e) {;
 			System.out.println("予期せぬエラーが発生しました");
