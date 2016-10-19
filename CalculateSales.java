@@ -17,12 +17,13 @@ import java.util.Map.Entry;
 public class CalculateSales {
 	public static void main(String[] args) throws IOException {
 
-		File mainFile = new File(args[0]);
-		if (!mainFile.exists()) {
+		if (args.length != 1) {
 			System.out.println("予期せぬエラーが発生しました");
+			return;
 		}
 
-		if (args.length != 1) {
+		File mainFile = new File(args[0]);
+		if (!mainFile.exists()) {
 			System.out.println("予期せぬエラーが発生しました");
 			return;
 		}
@@ -74,7 +75,9 @@ public class CalculateSales {
 			return;
 		} finally {
 			//ファイル出力のストリームを閉じる
-			br.close();
+			if (br != null) {
+				br.close();
+			}
 		}
 
 
@@ -107,7 +110,9 @@ public class CalculateSales {
 			return;
 
 		} finally {
-			br.close();
+			if (br != null) {
+				br.close();
+			}
 		}
 
 		//対象のリストを作る
@@ -138,11 +143,11 @@ public class CalculateSales {
 
 		// 集計をしていく
 		for (int i = 0; i < rcdList.size(); i++) {
-			FileReader fr = new FileReader(rcdList.get(i));
+
 			try {
 				List<String> earningsFile = new ArrayList<String>();
 				String str;
-				br = new BufferedReader(fr);
+				br = new BufferedReader(new FileReader(rcdList.get(i)));
 				while ((str = br.readLine()) != null) {
 					// ArrayLiatに1行ずつ入れていく
 					earningsFile.add(str);
@@ -182,7 +187,8 @@ public class CalculateSales {
 						return;
 					}
 				} else {
-					System.out.println(earningsFile.get(1) + "の商品コードが不正です");
+					String fileName = rcdList.get(i).getName();
+					System.out.println(fileName + "の商品コードが不正です");
 					return;
 				}
 
@@ -190,15 +196,19 @@ public class CalculateSales {
 				System.out.println("予期せぬエラーが発生しました");
 				return;
 			} finally {
-				br.close();
-				fr.close();
+				if (br != null) {
+					br.close();
+
+				}
+
+
 	   		}
 		}
 
-		File branchOut = new File(args[0], "branch.out");
-		FileWriter fw = new FileWriter(branchOut);
-		BufferedWriter bw = new BufferedWriter(fw);
+		BufferedWriter bw = null;
 		try {
+			File branchOut = new File(args[0], "branch.out");
+			bw = new BufferedWriter(new FileWriter(branchOut));
 			List<Map.Entry<String,Long>> entries =new ArrayList<Map.Entry<String,Long>>(branchTotalMap.entrySet());
 			Collections.sort(entries, new Comparator<Map.Entry<String,Long>>() {
 				public int compare(Entry<String,Long> entry1, Entry<String,Long> entry2) {
@@ -220,10 +230,9 @@ public class CalculateSales {
 			bw.close();
 		}
 
-		File commodityOut = new File(args[0], "commodity.out");
-		FileWriter cfw = new FileWriter(commodityOut);
-		BufferedWriter cbw = new BufferedWriter(cfw);
 		try {
+			File commodityOut = new File(args[0], "commodity.out");
+			bw = new BufferedWriter(new FileWriter(commodityOut));
 			List<Map.Entry<String,Long>> entries =new ArrayList<Map.Entry<String,Long>>(commodityTotalMap.entrySet());
 			Collections.sort(entries, new Comparator<Map.Entry<String,Long>>() {
 				public int compare(Entry<String,Long> entry1, Entry<String,Long> entry2) {
@@ -232,13 +241,13 @@ public class CalculateSales {
 			});
 
 				for (Entry<String,Long> s : entries) {
-					cbw.write(s.getKey() + "," + commodityMap.get(s.getKey()) + "," + s.getValue() + (System.getProperty("line.separator")));
+					bw.write(s.getKey() + "," + commodityMap.get(s.getKey()) + "," + s.getValue() + (System.getProperty("line.separator")));
 				}
 		} catch (IOException e) {;
 			System.out.println("予期せぬエラーが発生しました");
 			return;
 		} finally {
-			cbw.close();
+			bw.close();
 		}
 
 	}
