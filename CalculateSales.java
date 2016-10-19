@@ -7,8 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class CalculateSales {
 	public static void main(String[] args) throws IOException {
@@ -162,6 +166,10 @@ public class CalculateSales {
 		    		int total = branchTotalMap.get(earningsFile.get(0));
 		    		total += value;
 		    		branchTotalMap.put(earningsFile.get(0), total);
+		    		if (total > 999999999) {
+		    			System.out.println("合計金額が10桁を超えました");
+		    		}
+		    		
 		    	} else {
 		    		System.out.println(earningsFile.get(0) + "の支店コードが不正です");
 		    	}
@@ -171,6 +179,9 @@ public class CalculateSales {
 		    		int total = commodityTotalMap.get(earningsFile.get(1));
 		    		total += value;
 		    		commodityTotalMap.put(earningsFile.get(1), total);
+		    		if (total > 999999999) {
+		    			System.out.println("合計金額が10桁を超えました");
+		    		}
 		    	} else {
 		    		System.out.println(earningsFile.get(1) + "の商品コードが不正です");
 		    	}
@@ -214,20 +225,56 @@ public class CalculateSales {
 	    	File branchOut = new File(args[0], "branch.out");
 		    FileWriter fw = new FileWriter(branchOut);
 		    BufferedWriter bw = new BufferedWriter(fw);
-		    for (String key : branchMap.keySet()) {
+		   
+		    List<Map.Entry<String,Integer>> entries = 
+		              new ArrayList<Map.Entry<String,Integer>>(branchTotalMap.entrySet());
+		        Collections.sort(entries, new Comparator<Map.Entry<String,Integer>>() {
+		 
+		            @Override
+		            public int compare(
+		                  Entry<String,Integer> entry1, Entry<String,Integer> entry2) {
+		                return ((Integer)entry2.getValue()).compareTo((Integer)entry1.getValue());
+		            }
+		        });
+		        
+		        for (Entry<String,Integer> s : entries) {
+		            bw.write(s.getKey() + "," + branchMap.get(s.getKey()) + "," + s.getValue() + "\r\n");
+		        }
 
-		    	//System.out.println(key + "," + branchMap.get(key) + "," + branchTotalMap.get(key));
-		    	bw.write(key + "," + branchMap.get(key) + "," + branchTotalMap.get(key) + "\r\n");
+//		    for (String key : branchMap.keySet())
+		    	//bw.write(key + "," + branchMap.get(key) + "," + branchTotalMap.get(key) + "\r\n");
 
-
-		    }
 		    bw.close();
 	    }
 	    catch (IOException e) {
 	    	System.out.println(e);
 	    }
+
 	    try {
-	    	File commodityOut = new File(args[0], "co")
+	    	File commodityOut = new File(args[0], "commodity.out");
+	    	FileWriter fw = new FileWriter(commodityOut);
+	    	BufferedWriter bw = new BufferedWriter(fw);
+	    	
+	    	List<Map.Entry<String,Integer>> entries = 
+		              new ArrayList<Map.Entry<String,Integer>>(commodityTotalMap.entrySet());
+		        Collections.sort(entries, new Comparator<Map.Entry<String,Integer>>() {
+		 
+		            @Override
+		            public int compare(
+		                  Entry<String,Integer> entry1, Entry<String,Integer> entry2) {
+		                return ((Integer)entry2.getValue()).compareTo((Integer)entry1.getValue());
+		            }
+		        });
+		        
+		        for (Entry<String,Integer> s : entries) {
+		            System.out.println("s.getKey() : " + s.getKey());
+		            System.out.println("s.getValue() : " + s.getValue());
+		            bw.write(s.getKey() + "," + commodityMap.get(s.getKey()) + "," + s.getValue() + "\r\n");
+		        }
+	    	bw.close();
+	    }
+	    catch (IOException e) {
+	    	System.out.println(e);
 	    }
 
 
