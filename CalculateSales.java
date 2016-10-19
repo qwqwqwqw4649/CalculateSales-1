@@ -19,12 +19,18 @@ public class CalculateSales {
 
 		//ファイル名を引数にしてファイルオブジェクトを作成★コマンドライン引数
 		File branchFile = new File(args[0], "branch.lst");
-		//fileが存在するかを真偽値で判定し、引数が1つか調べる
-		if (!branchFile.exists() && args[0].length() != 0) {
+		//fileが存在するかを真偽値で判定する
+		if (!branchFile.exists()) {
 			System.out.println("支店定義ファイルが存在しません");
 			//if文の条件に当てはまったときに処理を停止
 			return;
 		}
+		if (args.length != 1) {
+			System.out.println("予期せぬエラーが発生しました");
+			return;
+		}
+
+
 
 		//キーと値が共にストリング型のマップオブジェクト
 		HashMap<String, String> branchMap = new HashMap<String, String>();
@@ -108,7 +114,7 @@ public class CalculateSales {
 			 //対象のリストを作る
 			File file = files[i];
 			//売上ファイルだけにする
-			if(file.getName().matches("^[0-9]{8}.rcd$")) {
+			if(file.isFile() && file.getName().matches("^[0-9]{8}.rcd$")) {
 				rcdList.add(file);
 			}
 		}
@@ -119,13 +125,12 @@ public class CalculateSales {
 			int index = Integer.parseInt(str.split("\\.")[0]);
 			if ((i + 1) == index) {
 			} else {
-				System.out.println("売上ファイル名が連番になってません");
+				System.out.println("売上ファイル名が連番になっていません");
 				return;
 			}
 		}
 
 		// 集計をしていく
-
 		for (int i = 0; i < rcdList.size(); i++) {
 			FileReader fr = new FileReader(rcdList.get(i));
 			try {
@@ -139,7 +144,8 @@ public class CalculateSales {
 				}
 
 				if (earningsFile.size() != 3) {
-					System.out.println(earningsFile.size() + "のフォーマットが不正です");
+					String fileName = rcdList.get(i).getName();
+					System.out.println(fileName + "のフォーマットが不正です");
 					return;
 				}
 
@@ -155,7 +161,8 @@ public class CalculateSales {
 					}
 
 				} else {
-					System.out.println(earningsFile.get(0) + "の支店コードが不正です");
+					String fileName = rcdList.get(i).getName();
+					System.out.println(fileName + "の支店コードが不正です");
 					return;
 				}
 
