@@ -144,13 +144,12 @@ public class CalculateSales {
 	public static boolean read(String fileName, HashMap<String, String> nameMap,
 			HashMap<String, Long> totalMap, String regex, String target) throws IOException {
 		BufferedReader br = null;
-		File file = new File(fileName);
-		if(!file.exists()) {
-			System.out.println(target + "定義ファイルが存在しません");
-			return false;
-		}
-
 		try {
+			File file = new File(fileName);
+			if(!file.exists()) {
+				System.out.println(target + "定義ファイルが存在しません");
+				return false;
+			}
 			br = new BufferedReader(new FileReader(file));
 			String str;
 
@@ -178,8 +177,8 @@ public class CalculateSales {
 
 	public static boolean write(HashMap<String, Long> totalMap, HashMap<String, String> nameMap, String fileName) throws IOException {
 		BufferedWriter bw = null;
-		File file = new File(fileName);
 		try {
+			File file = new File(fileName);
 			bw = new BufferedWriter(new FileWriter(file));
 			List<Map.Entry<String,Long>> entries = new ArrayList<Map.Entry<String,Long>>(totalMap.entrySet());
 			Collections.sort(entries, new Comparator<Map.Entry<String,Long>>() {
