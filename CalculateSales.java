@@ -166,6 +166,7 @@ public class CalculateSales {
 					commodityTotalMap.put(earningsFile.get(1), total);
 					if (total > 9999999999L) {
 						System.out.println("合計金額が10桁を超えました");
+						return;
 					}
 				} else {
 					String fileName = rcdList.get(i).getName();
@@ -179,7 +180,7 @@ public class CalculateSales {
 				if (br != null) {
 					br.close();
 				}
-	   		}
+			}
 		}
 
 		BufferedWriter bw = null;
@@ -199,8 +200,9 @@ public class CalculateSales {
 			System.out.println("予期せぬエラーが発生しました");
 			return;
 		} finally {
-			if (br != null)
-			bw.close();
+			if (bw != null) {
+				bw.close();
+			}
 		}
 
 		try {
