@@ -129,23 +129,24 @@ public class CalculateSales {
 			}
 
 		}
-
-		if (!write(branchTotalMap, branchMap, args[0], "branch.out")) {
+		definitionFile = directory.getPath() + File.separator + "branch.out";
+		if (!write(branchTotalMap, branchMap, definitionFile)) {
 			System.out.println("予期せぬエラーが発生しましたe");
 			return;
 		}
-		if (!write(commodityTotalMap, commodityMap, args[0], "commodity.out")) {
+		definitionFile = directory.getPath() + File.separator + "commodity.out";
+		if (!write(commodityTotalMap, commodityMap, definitionFile)) {
 			System.out.println("予期せぬエラーが発生しましたf");
 			return;
 		}
 	}
 
 	public static boolean read(String fileName, HashMap<String, String> nameMap,
-			HashMap<String, Long> totalMap, String regex, String error) throws IOException {
+			HashMap<String, Long> totalMap, String regex, String target) throws IOException {
 		BufferedReader br = null;
 		File file = new File(fileName);
 		if(!file.exists()) {
-			System.out.println(error + "定義ファイルが存在しません");
+			System.out.println(target + "定義ファイルが存在しません");
 			return false;
 		}
 
@@ -159,7 +160,7 @@ public class CalculateSales {
 					nameMap.put(data[0], data[1]);
 					totalMap.put(data[0], 0L);
 				} else {
-					System.out.println(error + "定義ファイルのフォーマットが不正です");
+					System.out.println(target + "定義ファイルのフォーマットが不正です");
 					return false;
 				}
 			}
@@ -175,9 +176,9 @@ public class CalculateSales {
 	}
 
 
-	public static boolean write(HashMap<String, Long> totalMap, HashMap<String, String> nameMap, String path, String fileName) throws IOException {
+	public static boolean write(HashMap<String, Long> totalMap, HashMap<String, String> nameMap, String fileName) throws IOException {
 		BufferedWriter bw = null;
-		File file = new File(path, fileName);
+		File file = new File(fileName);
 		try {
 			bw = new BufferedWriter(new FileWriter(file));
 			List<Map.Entry<String,Long>> entries = new ArrayList<Map.Entry<String,Long>>(totalMap.entrySet());
