@@ -221,7 +221,7 @@ public class CalculateSales {
 			System.out.println("予期せぬエラーが発生しました");
 			return;
 		} finally {
-			if (br != null){
+			if (bw != null){
 				bw.close();
 			}
 		}
