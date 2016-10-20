@@ -123,7 +123,7 @@ public class CalculateSales {
 		for (int i = 0; i < rcdList.size(); i++) {
 			String str = rcdList.get(i).getName();
 			int index = Integer.parseInt(str.split("\\.")[0]);
-			if (!((i + 1) == index)) {
+			if ((i + 1) != index) {
 				System.out.println("売上ファイル名が連番になっていません");
 				return;
 			}
@@ -164,7 +164,7 @@ public class CalculateSales {
 					long total = commodityTotalMap.get(earningsFile.get(1));
 					total += value;
 					commodityTotalMap.put(earningsFile.get(1), total);
-					if (total > 999999999) {
+					if (total > 9999999999L) {
 						System.out.println("合計金額が10桁を超えました");
 					}
 				} else {
@@ -212,9 +212,9 @@ public class CalculateSales {
 						return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue());
 				}
 			});
-				for (Entry<String,Long> s : entries) {
-					bw.write(s.getKey() + "," + commodityMap.get(s.getKey()) + "," + s.getValue() + (System.getProperty("line.separator")));
-				}
+			for (Entry<String,Long> s : entries) {
+				bw.write(s.getKey() + "," + commodityMap.get(s.getKey()) + "," + s.getValue() + (System.getProperty("line.separator")));
+			}
 		} catch (IOException e) {
 			System.out.println("予期せぬエラーが発生しました");
 			return;
@@ -223,12 +223,5 @@ public class CalculateSales {
 				bw.close();
 			}
 		}
-
 	}
-
 }
-
-
-
-
-
